@@ -1,0 +1,91 @@
+<div class="c-content-inner">
+  <div class="row">
+    <div class="col-md-12">
+      <p class="c-line-title">条件查询</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group row">
+        <label class="col-md-4 col-form-label text-right">项目组名称：</label>
+        <div class="col-md-6">
+          <select2 style="height:50px" [data]="exampleData" [options]="options2"></select2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label text-right">IP：</label>
+        <div class="col-md-6">
+          <input type="text" class="form-control" placeholder="请输入IP...">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label text-right">图表名称：</label>
+        <div class="col-md-6">
+          <input type="text" class="form-control" placeholder="请输入图表名称...">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-5 -align-right">
+      <div class="form-group">
+        <button class="btn btn-warning" (click)="addChart()"><i class="fa fa-plus fa-fw"></i> 添加监控</button>
+      </div>
+    </div>
+
+    <div class="col-md-1 -align-right">
+      <div class="form-group">
+        <button class="btn btn-primary"><i class="fa fa-search fa-fw"></i> 查询</button>
+      </div>
+    </div>
+
+    <div class="col-md-4 -align-right">
+      <div class="form-group">
+        <button class="btn btn-primary"><i class="fa fa-search fa-fw"></i> 清空</button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th class="text-center c-w-1">序号</th>
+          <th class="text-center c-w-2">项目组</th>
+          <th class="text-center c-w-2">IP</th>
+          <th class="text-center c-w-1">图表名称</th>
+          <th class="text-center c-w-2">图表类型</th>
+          <th class="text-center c-w-2">创建时间</th>
+          <th class="text-center c-w-1">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of dataList;let i = index">
+          <td class="text-center">{{i+1}}</td>
+          <td class="text-center">{{data.projectName}}</td>
+          <td class="text-center">{{data.hostIp}}</td>
+          <td class="text-center">{{data.chartName}}</td>
+          <td class="text-center">{{data.chartType}}</td>
+          <td class="text-center">{{data.createDate}}</td>
+          <td class="text-center">
+            <button class="btn btn-info btn-sm" (click)="showChart(data)"><i class="fa fa-search fa-fw"></i> 查看
+            </button>
+            <!--  <button class="btn btn-success btn-sm"><i class="fa fa-pencil fa-fw"></i> 编辑</button>
+              <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i> 删除</button>-->
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <c-http-pagination #hp [url]="url" method="post" [param]="param" [pageList]="pageList"
+                         (onDataChanged)="onDataChanged($event)"></c-http-pagination>
+    </div>
+  </div>
+</div>

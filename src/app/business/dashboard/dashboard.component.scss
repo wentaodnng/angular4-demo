@@ -1,0 +1,36 @@
+@import '../../../assets/scss/base/app-base.scss';
+
+.c-dashbord-login-tip {
+  color: $c-color-black-secondary;
+}
+
+.c-dashbord-card {
+  max-height: 400px;
+  .c-dashbord-card-inner {
+    max-height: 300px;
+    .c-dashbord-card-tip {
+      color: $c-color-black-secondary
+    }
+    .c-date {
+      color: $c-color-black-secondary;
+    }
+  }
+}
+
+.c-dashbord-common-func-outline {
+  border: 0px dashed $c-color-gray-deep;
+  .c-dashbord-common-func {
+    padding: 6px;
+    &:hover {
+      background: $c-color-gray-deep;
+      cursor: pointer;
+    }
+
+  }
+}
+
+
+
+
+
+

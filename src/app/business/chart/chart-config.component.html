@@ -1,0 +1,195 @@
+<div class="c-content-inner">
+  <div class="row">
+    <div class="col-md-12">
+      <p class="c-line-title">配置信息</p>
+    </div>
+  </div>
+  <form>
+    <div *ngIf="step ===1">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label text-right">项目组名称：</label>
+            <div class="col-md-8">
+              <select2 style="height:50px" [data]="exampleData" [value]="chartConfigModel.groupId"
+                       (valueChanged)="updateGroupOrHost($event,0)"
+                       [options]="options2"></select2>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label text-right">Host名称：</label>
+            <div class="col-md-8">
+              <select2 style="height:50px" [data]="hostData" [value]="chartConfigModel.hostId"
+                       (valueChanged)="updateGroupOrHost($event,1)"
+                       [options]="options2"></select2>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label text-right">监控名称：</label>
+            <div class="col-md-8">
+              <input type="text" name="monitorName" class="form-control" [(ngModel)]="chartConfigModel.monitorName"
+                     placeholder="请输入监控名称...">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label text-right">数据源路径：</label>
+            <div class="col-md-8">
+              <input type="text" class="form-control" name="filePath" [(ngModel)]="chartConfigModel.filePath"
+                     placeholder="请输入数据源路径...">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6" style="text-align: center">
+          <button type="button" class="btn btn-success" (click)="tryGetData()">尝试获取5条数据</button>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top: 15px;">
+        <div class="col-md-9">
+
+          <div class="form-group row">
+            <label class="col-md-2 col-form-label text-right"></label>
+            <div class="col-md-9">
+            <textarea class="text-area-comments" readonly
+                      style="height: 200px;overflow:auto;">{{dataString}}</textarea>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label text-right">指定分隔符：</label>
+            <div class="col-md-8">
+              <input type="text" class="form-control" name="separator" [(ngModel)]="chartConfigModel.separator"
+                     placeholder="请输入分隔符...">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6" style="text-align: center">
+          <button type="button" class="btn btn-success" (click)="nextStep()">下一步</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="step ===2">
+
+      <div class="row" style="margin-top: 15px;">
+        <div class="col-md-9">
+          <table class="table table-bordered">
+            <thead>
+            <tr>
+              <th class="text-center c-w-1">序号</th>
+              <th class="text-center c-w-2">列名称</th>
+              <th class="text-center c-w-1">类型</th>
+              <th class="text-center c-w-2">别名</th>
+              <th class="text-center c-w-3">描述</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of chartConfigModel.tableColumnVOS;let i = index">
+              <td class="text-center">{{i+1}}</td>
+              <td class="text-center">{{data.colName}}</td>
+              <td class="text-center">
+                <select2 style="height:50px" [data]="colTypeData" [value]="data.colType"
+                         [options]="options2" (valueChanged)="updateTypeSelected($event,data)"></select2>
+              </td>
+              <td class="text-center"><input type="text" name="colAliase"
+                                             [(ngModel)]="data.colAliase"
+                                             class="form-control"
+                                             placeholder="请输入别名..."></td>
+              <td class="text-center">
+                <input type="text" name="description" [(ngModel)]="data.description"
+                       class="form-control">
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6" style="text-align: center">
+          <button type="button" class="btn btn-success" (click)="lastStep()">上一步</button>
+          <button type="button" class="btn btn-success" (click)="nextStep()">下一步</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="step ===3">
+
+      <div class="row" style="margin-top: 15px;">
+        <div class="col-md-9">
+          <table class="table table-bordered">
+            <thead>
+            <tr>
+              <th class="text-center c-w-1">sql语法</th>
+              <th class="text-center c-w-1">函数/表名</th>
+              <th class="text-center c-w-3">字段</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td class="text-center">select</td>
+              <td class="text-center">
+                <select2 style="height:50px" [data]="functionData"
+                         [options]="multOptions"></select2>
+              </td>
+              <td class="text-center">
+                <select2 style="height:50px" [data]="tableData"
+                         [options]="multOptions"></select2>
+              </td>
+
+            </tr>
+            <tr>
+              <td class="text-center">from</td>
+              <td class="text-center">
+                {{chartConfigModel.monitorName}}
+              </td>
+              <td class="text-center">
+
+              </td>
+
+            </tr>
+            <tr>
+              <td class="text-center"></td>
+              <td class="text-center">
+                group by
+              </td>
+              <td class="text-center">
+                <select2 style="height:50px" [data]="tableData"
+                         [options]="multOptions"></select2>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6" style="text-align: center">
+          <button type="button" class="btn btn-success" (click)="lastStep()">上一步</button>
+          <button type="button" class="btn btn-success" (click)="nextStep()">完成</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
